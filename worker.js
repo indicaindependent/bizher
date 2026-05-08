@@ -174,6 +174,20 @@ textarea{resize:vertical;min-height:80px}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.3);animation:fadein .3s}
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
+
+/* PDF DOWNLOAD BUTTONS */
+.btn-pdf{background:linear-gradient(135deg,#b8975a,#d4b278);color:#fff;border:none;padding:clamp(10px,2vw,14px) clamp(16px,3vw,28px);border-radius:8px;cursor:pointer;font-size:clamp(13px,2vw,15px);font-weight:700;letter-spacing:.5px;transition:all .25s;box-shadow:0 3px 12px rgba(184,151,90,.35);display:inline-flex;align-items:center;gap:8px}
+.btn-pdf:hover{background:linear-gradient(135deg,#d4b278,#f0c040);transform:translateY(-1px);box-shadow:0 6px 20px rgba(184,151,90,.5)}
+.btn-pdf:active{transform:translateY(0)}
+.btn-pdf:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-pdf-sm{background:transparent;color:#b8975a;border:1.5px solid #b8975a;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:700;transition:all .2s}
+.btn-pdf-sm:hover{background:#b8975a;color:#fff}
+.btn-pdf-sm:disabled{opacity:.6;cursor:not-allowed}
+.pdf-panel{background:linear-gradient(135deg,#0d1b3e,#162450);border-radius:12px;padding:20px 24px;margin:16px 0;border:1px solid rgba(184,151,90,.3)}
+.pdf-panel-title{color:#f0c040;font-weight:800;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.pdf-panel-sub{color:rgba(255,255,255,.7);font-size:12px;margin-bottom:16px}
+.pdf-btn-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
 @media print{.hdr,.prog,.brow,.footer,.cbanner,.lang-tog{display:none!important}.card{box-shadow:none;border:1px solid #ccc}body{background:#fff}}
 @media(max-width:600px){.slbl{display:none}.lang-tog{position:static;margin-top:12px}}
 </style>
@@ -403,7 +417,7 @@ textarea{resize:vertical;min-height:80px}
 
       <div id="articles-out" class="docout">Fill out Step 1 to generate your Articles of Organization.</div>
       <div class="dact">
-        <button class="btn btn-g btn-sm" onclick="window.print()">&#128424; Print</button>
+        <button id="pdf-btn-articles" class="btn btn-pdf btn-sm" onclick="downloadPDF('articles')">&#128196; Download Articles of Organization PDF</button>
         <button class="btn btn-s btn-sm" onclick="copyText('articles-out')">&#128203; Copy Text</button>
         <a href="https://apps.dos.ny.gov/publicInquiry/" target="_blank" rel="noopener" class="btn btn-s btn-sm">File Online at NY DOS &rarr;</a>
       </div>
@@ -510,6 +524,7 @@ textarea{resize:vertical;min-height:80px}
           <div id="pub-notice" class="docout">Complete Step 1 to generate your publication notice text.</div>
           <div class="dact">
             <button class="btn btn-g btn-sm" onclick="copyText('pub-notice')">&#128203; Copy Notice</button>
+        <button id="pdf-btn-publication2" class="btn btn-pdf btn-sm" onclick="downloadPDF('publication')">&#128196; Download Publication Notice PDF</button>
           </div>
           <p style="font-size:11px;color:var(--muted);margin-top:8px">Note: The newspaper will draft the final notice. Provide them your exact LLC name and filing date.</p>
         </div>
@@ -584,10 +599,16 @@ textarea{resize:vertical;min-height:80px}
       </div>
 
       <button class="btn btn-g" onclick="genOpAgreement()" style="margin-bottom:16px">&#128196; Generate Operating Agreement</button>
-      <div id="opagree-out" class="docout" style="display:none"></div>
+      <div id="opagree-out" class="docout" style="display:none;font-size:12px;max-height:180px"></div>
       <div id="opagree-act" class="dact" style="display:none">
-        <button class="btn btn-g btn-sm" onclick="window.print()">&#128424; Print</button>
-        <button class="btn btn-s btn-sm" onclick="copyText('opagree-out')">&#128203; Copy Text</button>
+        <div class="pdf-panel" style="margin-top:12px">
+          <div class="pdf-panel-title">&#128196; Professional PDF Ready</div>
+          <div class="pdf-panel-sub">Download a fully formatted Operating Agreement PDF — print, sign, and keep in your business records.</div>
+          <div class="pdf-btn-row">
+            <button id="pdf-btn-operating" class="btn btn-pdf" onclick="downloadPDF('operating')">&#128196; Download Operating Agreement PDF</button>
+            <button class="btn btn-s btn-sm" onclick="copyText('opagree-out')">&#128203; Copy Text</button>
+          </div>
+        </div>
       </div>
 
       <div class="ib red" style="margin-top:16px">
@@ -739,8 +760,21 @@ textarea{resize:vertical;min-height:80px}
           </ul>
         </div>
       </div>
-      <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-g" onclick="window.print()">&#128424; Print Complete Summary</button>
+      <div class="pdf-panel" style="margin-top:24px">
+        <div class="pdf-panel-title" style="font-size:18px">&#127942; Your Formation Package is Ready</div>
+        <div class="pdf-panel-sub" style="font-size:13px;margin-bottom:20px">Download professional, legally accurate PDF documents. All documents are generated 100% in your browser — nothing is sent to a server.</div>
+        <div class="pdf-btn-row" style="justify-content:center;margin-bottom:14px">
+          <button id="pdf-btn-package" class="btn btn-pdf" style="font-size:16px;padding:14px 32px" onclick="downloadPDF('package')">&#127942; Complete Formation Package (All 4 Documents)</button>
+        </div>
+        <div style="text-align:center;color:rgba(255,255,255,.5);font-size:11px;margin:8px 0 16px">— or download individually —</div>
+        <div class="pdf-btn-row" style="justify-content:center">
+          <button id="pdf-btn-articles2" class="btn btn-pdf-sm" onclick="downloadPDF('articles')">&#128196; Articles of Organization</button>
+          <button id="pdf-btn-publication" class="btn btn-pdf-sm" onclick="downloadPDF('publication')">&#128196; Publication Notice</button>
+          <button id="pdf-btn-operating2" class="btn btn-pdf-sm" onclick="downloadPDF('operating')">&#128196; Operating Agreement</button>
+          <button id="pdf-btn-wbe" class="btn btn-pdf-sm" onclick="downloadPDF('wbe')">&#128196; WBE/MWBE Checklist</button>
+        </div>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
         <button class="btn btn-s" onclick="resetWizard()">&#8635; Start Over</button>
       </div>
       <div class="disc" style="margin-top:24px;text-align:left">This tool provides general legal information only, not legal advice. Laws change -- always verify current requirements with a licensed NY attorney and the NY Department of State before filing.</div>
@@ -1251,6 +1285,942 @@ window.addEventListener('DOMContentLoaded', function() {
   restoreDraft();
   restoreChks();
 });
+
+
+// ============================================================
+// ENTERPRISE PDF ENGINE — pdf-lib based
+// ============================================================
+// ============================================================
+// NY BizHer — Enterprise PDF Engine
+// Uses pdf-lib (MIT license, pure browser, ISO 32000 compliant)
+// All PDF generation runs 100% client-side — no server needed
+// ============================================================
+
+// ---------- PDF CONSTANTS ----------
+var PDF_MARGIN_L = 90;   // 1.25 inches at 72dpi
+var PDF_MARGIN_R = 90;
+var PDF_MARGIN_T = 72;   // 1 inch
+var PDF_MARGIN_B = 72;
+var PDF_PAGE_W = 612;    // US Letter 8.5"
+var PDF_PAGE_H = 792;    // US Letter 11"
+var PDF_USABLE_W = PDF_PAGE_W - PDF_MARGIN_L - PDF_MARGIN_R;  // 432pt
+
+// Colors (RGB 0-1)
+var C_NAVY   = {r:0.051, g:0.106, b:0.243};   // #0d1b3e
+var C_GOLD   = {r:0.722, g:0.592, b:0.353};   // #b8975a
+var C_TEXT   = {r:0.102, g:0.102, b:0.102};   // #1a1a1a
+var C_MUTED  = {r:0.333, g:0.376, b:0.502};   // #556080
+var C_LIGHT  = {r:0.878, g:0.894, b:0.941};   // #e0e4ef
+var C_WHITE  = {r:1,     g:1,     b:1    };
+var C_GREEN  = {r:0.133, g:0.545, b:0.133};
+var C_RED    = {r:0.7,   g:0.1,   b:0.1  };
+
+// ---------- LOAD PDF-LIB ----------
+function loadPdfLib() {
+  return new Promise(function(resolve, reject) {
+    if (window.PDFLib) { resolve(window.PDFLib); return; }
+    var s = document.createElement('script');
+    s.src = 'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    s.onload = function() { resolve(window.PDFLib); };
+    s.onerror = function() { reject(new Error('Failed to load pdf-lib')); };
+    document.head.appendChild(s);
+  });
+}
+
+// ---------- LAYOUT ENGINE ----------
+// Wraps text to fit within maxWidth, returns array of lines
+function wrapText(text, font, fontSize, maxWidth) {
+  if (!text) return [''];
+  var words = String(text).split(' ');
+  var lines = [];
+  var current = '';
+  for (var i = 0; i < words.length; i++) {
+    var word = words[i];
+    var test = current ? current + ' ' + word : word;
+    var w = font.widthOfTextAtSize(test, fontSize);
+    if (w > maxWidth && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = test;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+// Draw wrapped text block, returns new Y position
+function drawTextBlock(page, text, font, fontSize, color, x, y, maxWidth, lineHeight) {
+  var lines = wrapText(text, font, fontSize, maxWidth);
+  var lh = lineHeight || fontSize * 1.5;
+  for (var i = 0; i < lines.length; i++) {
+    if (y < PDF_MARGIN_B + 20) break;
+    page.drawText(lines[i], { x: x, y: y, size: fontSize, font: font, color: PDFLib.rgb(color.r, color.g, color.b) });
+    y -= lh;
+  }
+  return y;
+}
+
+// Draw a divider line
+function drawDivider(page, y, color, thickness) {
+  var c = color || C_LIGHT;
+  var t = thickness || 0.5;
+  page.drawLine({
+    start: {x: PDF_MARGIN_L, y: y},
+    end:   {x: PDF_PAGE_W - PDF_MARGIN_R, y: y},
+    thickness: t,
+    color: PDFLib.rgb(c.r, c.g, c.b)
+  });
+}
+
+// Draw a filled rectangle
+function drawRect(page, x, y, w, h, color) {
+  page.drawRectangle({ x:x, y:y, width:w, height:h, color: PDFLib.rgb(color.r, color.g, color.b) });
+}
+
+// Draw page header band
+function drawPageHeader(page, fonts, docTitle, subtitle) {
+  // Navy top bar
+  drawRect(page, 0, PDF_PAGE_H - 50, PDF_PAGE_W, 50, C_NAVY);
+  // Title in header
+  page.drawText('NY BizHer', {
+    x: PDF_MARGIN_L, y: PDF_PAGE_H - 32,
+    size: 14, font: fonts.bold, color: PDFLib.rgb(C_GOLD.r, C_GOLD.g, C_GOLD.b)
+  });
+  page.drawText('Free LLC Formation Wizard', {
+    x: PDF_MARGIN_L, y: PDF_PAGE_H - 46,
+    size: 8, font: fonts.regular, color: PDFLib.rgb(1,1,1)
+  });
+  // Doc title right side
+  var titleW = fonts.bold.widthOfTextAtSize(docTitle, 10);
+  page.drawText(docTitle, {
+    x: PDF_PAGE_W - PDF_MARGIN_R - titleW, y: PDF_PAGE_H - 32,
+    size: 10, font: fonts.bold, color: PDFLib.rgb(1,1,1)
+  });
+  if (subtitle) {
+    var subW = fonts.regular.widthOfTextAtSize(subtitle, 8);
+    page.drawText(subtitle, {
+      x: PDF_PAGE_W - PDF_MARGIN_R - subW, y: PDF_PAGE_H - 46,
+      size: 8, font: fonts.regular, color: PDFLib.rgb(0.8,0.8,0.8)
+    });
+  }
+  // Gold accent line under header
+  drawRect(page, 0, PDF_PAGE_H - 52, PDF_PAGE_W, 2, C_GOLD);
+}
+
+// Draw page footer
+function drawPageFooter(page, fonts, pageNum, totalPages) {
+  var today = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  drawRect(page, 0, 0, PDF_PAGE_W, 42, C_NAVY);
+  page.drawText('Generated by NY BizHer (bizher.osintnet.uk) — ' + today, {
+    x: PDF_MARGIN_L, y: 26,
+    size: 7.5, font: fonts.regular, color: PDFLib.rgb(0.7,0.7,0.7)
+  });
+  page.drawText('NOT LEGAL ADVICE. Consult a licensed NY attorney before filing.', {
+    x: PDF_MARGIN_L, y: 14,
+    size: 7, font: fonts.regular, color: PDFLib.rgb(0.6,0.6,0.6)
+  });
+  var pgText = 'Page ' + pageNum + (totalPages ? ' of ' + totalPages : '');
+  var pgW = fonts.regular.widthOfTextAtSize(pgText, 8);
+  page.drawText(pgText, {
+    x: PDF_PAGE_W - PDF_MARGIN_R - pgW, y: 20,
+    size: 8, font: fonts.regular, color: PDFLib.rgb(0.7,0.7,0.7)
+  });
+}
+
+// Draw a section header
+function drawSectionHeader(page, fonts, title, y) {
+  // Light background band
+  drawRect(page, PDF_MARGIN_L - 10, y - 4, PDF_USABLE_W + 20, 22, {r:0.933,g:0.937,b:0.953});
+  // Navy left accent
+  drawRect(page, PDF_MARGIN_L - 10, y - 4, 4, 22, C_NAVY);
+  page.drawText(title, {
+    x: PDF_MARGIN_L + 4, y: y + 4,
+    size: 11, font: fonts.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  return y - 30;
+}
+
+// Draw a labeled field value row
+function drawField(page, fonts, label, value, y) {
+  page.drawText(label + ':', {
+    x: PDF_MARGIN_L, y: y,
+    size: 9, font: fonts.bold, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b)
+  });
+  var labelW = fonts.bold.widthOfTextAtSize(label + ':', 9) + 10;
+  var valLines = wrapText(value || 'Not specified', fonts.regular, 11, PDF_USABLE_W - labelW);
+  page.drawText(valLines[0] || '', {
+    x: PDF_MARGIN_L + labelW, y: y,
+    size: 11, font: fonts.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 18;
+  for (var i = 1; i < valLines.length; i++) {
+    page.drawText(valLines[i], {
+      x: PDF_MARGIN_L + labelW, y: y,
+      size: 11, font: fonts.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+    });
+    y -= 18;
+  }
+  return y - 4;
+}
+
+// Draw info box (bordered notice)
+function drawInfoBox(page, fonts, title, lines, y, borderColor) {
+  var bc = borderColor || C_NAVY;
+  var lineH = 16;
+  var boxH = (title ? 20 : 0) + lines.length * lineH + 20;
+  // Border rect
+  page.drawRectangle({
+    x: PDF_MARGIN_L, y: y - boxH, width: PDF_USABLE_W, height: boxH,
+    borderColor: PDFLib.rgb(bc.r, bc.g, bc.b), borderWidth: 1,
+    color: PDFLib.rgb(0.972, 0.976, 0.988)
+  });
+  // Left accent
+  drawRect(page, PDF_MARGIN_L, y - boxH, 3, boxH, bc);
+  var ty = y - 14;
+  if (title) {
+    page.drawText(title, {
+      x: PDF_MARGIN_L + 14, y: ty,
+      size: 10, font: fonts.bold, color: PDFLib.rgb(bc.r, bc.g, bc.b)
+    });
+    ty -= 18;
+  }
+  for (var i = 0; i < lines.length; i++) {
+    page.drawText(lines[i], {
+      x: PDF_MARGIN_L + 14, y: ty,
+      size: 9, font: fonts.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+    });
+    ty -= lineH;
+  }
+  return y - boxH - 12;
+}
+
+// Signature block
+function drawSignatureBlock(page, fonts, label, name, y) {
+  drawDivider(page, y - 30, C_TEXT, 0.75);
+  page.drawText(label, {
+    x: PDF_MARGIN_L, y: y - 44,
+    size: 10, font: fonts.bold, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  page.drawText('Printed Name: ' + (name || '________________________________'), {
+    x: PDF_MARGIN_L, y: y - 60,
+    size: 10, font: fonts.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  page.drawText('Date: ___________________________', {
+    x: PDF_PAGE_W - PDF_MARGIN_R - 200, y: y - 60,
+    size: 10, font: fonts.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  return y - 80;
+}
+
+// ============================================================
+// DOCUMENT 1: ARTICLES OF ORGANIZATION
+// ============================================================
+async function generateArticlesPDF(pdfLib, fonts, d) {
+  var doc = await pdfLib.PDFDocument.create();
+  doc.setTitle('Articles of Organization — ' + d.name);
+  doc.setAuthor('NY BizHer / Indica Independent Media');
+  doc.setSubject('New York LLC Articles of Organization (DOS-1336-f equivalent)');
+  doc.setCreator('NY BizHer (bizher.osintnet.uk)');
+  doc.setCreationDate(new Date());
+
+  // Embed fonts
+  var timesRoman = await doc.embedFont(pdfLib.StandardFonts.TimesRoman);
+  var timesBold  = await doc.embedFont(pdfLib.StandardFonts.TimesRomanBold);
+  var helvetica  = await doc.embedFont(pdfLib.StandardFonts.Helvetica);
+  var helBold    = await doc.embedFont(pdfLib.StandardFonts.HelveticaBold);
+  var f = { regular: timesRoman, bold: timesBold, sans: helvetica, sansBold: helBold };
+
+  // --- PAGE 1: COVER ---
+  var pg = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg, {regular:f.sans, bold:f.sansBold}, 'Articles of Organization', 'Form DOS-1336-f Equivalent');
+
+  var y = PDF_PAGE_H - 80;
+
+  // Big title block
+  drawRect(pg, PDF_MARGIN_L, y - 110, PDF_USABLE_W, 110, {r:0.949,g:0.953,b:0.969});
+  drawRect(pg, PDF_MARGIN_L, y - 110, PDF_USABLE_W, 4, C_NAVY);
+  drawRect(pg, PDF_MARGIN_L, y - 110, 4, 110, C_GOLD);
+
+  pg.drawText('ARTICLES OF ORGANIZATION', {
+    x: PDF_MARGIN_L + 20, y: y - 30,
+    size: 22, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  pg.drawText('DOMESTIC LIMITED LIABILITY COMPANY', {
+    x: PDF_MARGIN_L + 20, y: y - 52,
+    size: 13, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  pg.drawText('NEW YORK STATE DEPARTMENT OF STATE', {
+    x: PDF_MARGIN_L + 20, y: y - 70,
+    size: 11, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b)
+  });
+  pg.drawText('Pursuant to New York Limited Liability Company Law', {
+    x: PDF_MARGIN_L + 20, y: y - 86,
+    size: 10, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b)
+  });
+  pg.drawText('Prepared by NY BizHer — Free Legal Tool', {
+    x: PDF_MARGIN_L + 20, y: y - 102,
+    size: 9, font: f.regular, color: PDFLib.rgb(C_GOLD.r, C_GOLD.g, C_GOLD.b)
+  });
+
+  y -= 130;
+
+  // Section I — Name
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE I — NAME', y);
+  y -= 10;
+  pg.drawText('The name of the Limited Liability Company is:', {
+    x: PDF_MARGIN_L, y: y,
+    size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 22;
+  pg.drawText(d.name, {
+    x: PDF_MARGIN_L, y: y,
+    size: 16, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 28;
+
+  // Section II — County
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE II — COUNTY OF PRINCIPAL OFFICE', y);
+  y -= 10;
+  pg.drawText('The county in New York State in which the office of the Limited Liability Company', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 16;
+  pg.drawText('is located is:', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 22;
+  pg.drawText(d.county + ' County, New York', {
+    x: PDF_MARGIN_L, y: y, size: 14, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 28;
+
+  // Section III — Registered Agent
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE III — REGISTERED AGENT', y);
+  y -= 10;
+  var agentText = (d.agent === 'dos')
+    ? 'The Secretary of State of New York is designated as agent of the Limited Liability Company upon whom process against it may be served. The Secretary of State shall mail a copy of any process against it served upon the Secretary of State to: ' + d.organizer + ', ' + d.address + '.'
+    : 'The following is the registered agent upon whom process against the Company may be served: ' + d.organizer + ', located at ' + d.address + '.';
+  y = drawTextBlock(pg, agentText, f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section IV — Purpose
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE IV — PURPOSE', y);
+  y -= 10;
+  y = drawTextBlock(pg, d.purpose, f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section V — Organizer
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE V — ORGANIZER', y);
+  y -= 10;
+  pg.drawText('The name and address of the organizer is:', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 20;
+  pg.drawText(d.organizer, {
+    x: PDF_MARGIN_L, y: y, size: 12, font: f.bold, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 18;
+  pg.drawText(d.address, {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 32;
+
+  // IN WITNESS / Signature
+  var today = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  pg.drawText('IN WITNESS WHEREOF, I have executed this document on ' + today + '.', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 10;
+  y = drawSignatureBlock(pg, {regular:f.regular, bold:f.bold}, 'Signature of Organizer: ________________________________', d.organizer, y);
+
+  drawPageFooter(pg, {regular:f.sans, bold:f.sansBold}, 1, 2);
+
+  // --- PAGE 2: FILING INSTRUCTIONS ---
+  var pg2 = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg2, {regular:f.sans, bold:f.sansBold}, 'Filing Instructions', 'Articles of Organization');
+  y = PDF_PAGE_H - 90;
+
+  pg2.drawText('FILING INSTRUCTIONS', {
+    x: PDF_MARGIN_L, y: y, size: 18, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 8;
+  drawDivider(pg2, y, C_GOLD, 2);
+  y -= 20;
+
+  y = drawInfoBox(pg2, {regular:f.sans, bold:f.sansBold}, 'FILING FEE: $200.00 (non-refundable)', [
+    'Make check or money order payable to: "Department of State"',
+    'Online payment: credit/debit card accepted at apps.dos.ny.gov'
+  ], y, C_NAVY);
+
+  y -= 8;
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'Option 1: File Online (FASTEST — Recommended)', y);
+  y -= 10;
+  y = drawTextBlock(pg2, '1. Go to: apps.dos.ny.gov', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y = drawTextBlock(pg2, '2. Create or log into your NY.gov ID account', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y = drawTextBlock(pg2, '3. Select "File Articles of Organization" and enter your information', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y = drawTextBlock(pg2, '4. Pay $200 filing fee online — same-day processing available', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y = drawTextBlock(pg2, '5. SAVE your stamped filing receipt — required for MWBE certification', f.bold, 11, C_NAVY, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'Option 2: File By Mail', y);
+  y -= 10;
+  y = drawTextBlock(pg2, 'Mail this document with a check for $200 to:', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 6;
+  drawRect(pg2, PDF_MARGIN_L, y - 56, PDF_USABLE_W / 2, 60, {r:0.949,g:0.953,b:0.969});
+  pg2.drawText('New York Department of State', { x: PDF_MARGIN_L + 12, y: y - 14, size: 11, font: f.bold, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b) });
+  pg2.drawText('Division of Corporations', { x: PDF_MARGIN_L + 12, y: y - 28, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b) });
+  pg2.drawText('One Commerce Plaza, 99 Washington Avenue', { x: PDF_MARGIN_L + 12, y: y - 42, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b) });
+  pg2.drawText('Albany, New York 12231', { x: PDF_MARGIN_L + 12, y: y - 56, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b) });
+  y -= 76;
+
+  y = drawInfoBox(pg2, {regular:f.sans, bold:f.sansBold}, 'CRITICAL: 120-Day Publication Deadline', [
+    'Your 120-day publication clock starts on your FILING DATE.',
+    'You MUST publish in 2 newspapers for 6 weeks within 120 days.',
+    'Failure to publish results in SUSPENSION of your LLC.',
+    'See your Publication Notice document for newspaper instructions.'
+  ], y, C_RED);
+
+  drawPageFooter(pg2, {regular:f.sans, bold:f.sansBold}, 2, 2);
+
+  return doc;
+}
+
+// ============================================================
+// DOCUMENT 2: PUBLICATION NOTICE
+// ============================================================
+async function generatePublicationPDF(pdfLib, fonts, d) {
+  var doc = await pdfLib.PDFDocument.create();
+  doc.setTitle('Publication Notice — ' + d.name);
+  doc.setSubject('NY LLC Publication Requirement (LLC Law Section 206)');
+  doc.setCreator('NY BizHer (bizher.osintnet.uk)');
+  doc.setCreationDate(new Date());
+
+  var timesRoman = await doc.embedFont(pdfLib.StandardFonts.TimesRoman);
+  var timesBold  = await doc.embedFont(pdfLib.StandardFonts.TimesRomanBold);
+  var helvetica  = await doc.embedFont(pdfLib.StandardFonts.Helvetica);
+  var helBold    = await doc.embedFont(pdfLib.StandardFonts.HelveticaBold);
+  var f = { regular: timesRoman, bold: timesBold, sans: helvetica, sansBold: helBold };
+
+  var pg = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg, {regular:f.sans, bold:f.sansBold}, 'Publication Notice', 'LLC Law § 206');
+
+  var y = PDF_PAGE_H - 90;
+
+  pg.drawText('PUBLICATION NOTICE', {
+    x: PDF_MARGIN_L, y: y, size: 18, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 8;
+  drawDivider(pg, y, C_GOLD, 2);
+  y -= 20;
+
+  pg.drawText('New York Limited Liability Company Law, Section 206 — Required Publication', {
+    x: PDF_MARGIN_L, y: y, size: 10, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b)
+  });
+  y -= 28;
+
+  // The legal notice text box
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'OFFICIAL NOTICE TEXT — Submit this EXACT text to both newspapers', y);
+  y -= 10;
+
+  // Notice box
+  var noticeLines = [
+    'NOTICE OF FORMATION OF LIMITED LIABILITY COMPANY',
+    '',
+    'Notice of Formation of ' + d.name + ', a Limited Liability Company.',
+    'Articles of Organization were filed with the Secretary of State',
+    'of New York (SSNY) on [INSERT YOUR ACTUAL FILING DATE].',
+    'Office location: ' + d.county + ' County.',
+    'SSNY has been designated as agent of the LLC upon whom process',
+    'against it may be served. SSNY shall mail a copy of any process',
+    'to: ' + d.organizer + ', ' + d.address + '.',
+    'Purpose: ' + d.purpose
+  ];
+  var noteH = noticeLines.length * 16 + 24;
+  // pdf-lib ready
+  pg.drawRectangle({
+    x: PDF_MARGIN_L, y: y - noteH, width: PDF_USABLE_W, height: noteH,
+    color: PDFLib.rgb(0.972, 0.976, 0.988),
+    borderColor: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b), borderWidth: 1.5
+  });
+  drawRect(pg, PDF_MARGIN_L, y - noteH, 4, noteH, C_GOLD);
+  var ny = y - 14;
+  for (var i = 0; i < noticeLines.length; i++) {
+    pg.drawText(noticeLines[i], {
+      x: PDF_MARGIN_L + 14, y: ny,
+      size: noticeLines[i] === '' ? 6 : (i === 0 ? 11 : 10),
+      font: i === 0 ? f.bold : f.regular,
+      color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+    });
+    ny -= (noticeLines[i] === '' ? 8 : 16);
+  }
+  y -= noteH + 16;
+
+  y = drawInfoBox(pg, {regular:f.sans, bold:f.sansBold}, 'Where to publish — contact your County Clerk', [
+    'The County Clerk of ' + d.county + ' County designates 2 newspapers for publication.',
+    'Call: Look up "' + d.county + ' County Clerk" at dos.ny.gov for the current phone/address.',
+    'Ask: "Which newspapers are designated for LLC publication notices in ' + d.county + ' County?"',
+    'Cost: Varies by county — from ~$40 (rural) to $2,000+ (Manhattan/NYC counties).',
+    'Timeline: You must publish for 6 CONSECUTIVE WEEKS in BOTH newspapers.',
+    'Deadline: Within 120 days of your Articles of Organization filing date.'
+  ], y, C_NAVY);
+
+  y -= 8;
+  y = drawInfoBox(pg, {regular:f.sans, bold:f.sansBold}, 'After Publishing — Certificate of Publication', [
+    '1. Each newspaper will send you an Affidavit of Publication after your 6-week run.',
+    '2. File both affidavits + Certificate of Publication (DOS-1706) with DOS.',
+    '3. Filing fee: $50 payable to "Department of State".',
+    '4. File within 120 days of your Articles of Organization filing date.'
+  ], y, C_GREEN);
+
+  drawPageFooter(pg, {regular:f.sans, bold:f.sansBold}, 1, 1);
+
+  return doc;
+}
+
+// ============================================================
+// DOCUMENT 3: OPERATING AGREEMENT
+// ============================================================
+async function generateOperatingAgreementPDF(pdfLib, fonts, d) {
+  var doc = await pdfLib.PDFDocument.create();
+  doc.setTitle('Operating Agreement — ' + d.name);
+  doc.setSubject('New York LLC Operating Agreement');
+  doc.setCreator('NY BizHer (bizher.osintnet.uk)');
+  doc.setCreationDate(new Date());
+
+  var timesRoman = await doc.embedFont(pdfLib.StandardFonts.TimesRoman);
+  var timesBold  = await doc.embedFont(pdfLib.StandardFonts.TimesRomanBold);
+  var helvetica  = await doc.embedFont(pdfLib.StandardFonts.Helvetica);
+  var helBold    = await doc.embedFont(pdfLib.StandardFonts.HelveticaBold);
+  var f = { regular: timesRoman, bold: timesBold, sans: helvetica, sansBold: helBold };
+
+  var today = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  var mgmtType = (d.mgmt === 'manager-managed') ? 'Manager-Managed' : 'Member-Managed';
+
+  // --- PAGE 1 ---
+  var pg = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg, {regular:f.sans, bold:f.sansBold}, 'Operating Agreement', d.name);
+
+  var y = PDF_PAGE_H - 90;
+
+  // Title block
+  pg.drawText('OPERATING AGREEMENT', {
+    x: PDF_MARGIN_L, y: y, size: 20, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 8;
+  drawDivider(pg, y, C_GOLD, 2);
+  y -= 16;
+  pg.drawText('OF', { x: PDF_MARGIN_L, y: y, size: 13, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b) });
+  y -= 20;
+  pg.drawText(d.name, { x: PDF_MARGIN_L, y: y, size: 16, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b) });
+  y -= 20;
+  pg.drawText('A ' + mgmtType + ' New York Limited Liability Company', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b)
+  });
+  y -= 32;
+
+  pg.drawText('This Operating Agreement ("Agreement") is entered into as of ' + today + ', by and', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 16;
+  pg.drawText('among the members listed below ("Members") of ' + d.name + ' (the "Company"),', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 16;
+  pg.drawText('a limited liability company organized under the New York Limited Liability Company Law.', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 28;
+
+  // Section 1 — Formation
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 1 — FORMATION AND TERM', y);
+  y -= 10;
+  var art1 = '1.1 The Company was formed pursuant to the New York Limited Liability Company Law by filing Articles of Organization with the New York Department of State. 1.2 The term of the Company shall be perpetual unless dissolved in accordance with this Agreement or applicable law.';
+  y = drawTextBlock(pg, art1, f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section 2 — Principal Office
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 2 — PRINCIPAL OFFICE AND REGISTERED AGENT', y);
+  y -= 10;
+  y = drawField(pg, {regular:f.regular, bold:f.bold}, 'Principal Office', d.address, y);
+  y = drawField(pg, {regular:f.regular, bold:f.bold}, 'County', d.county + ' County, New York', y);
+  y = drawField(pg, {regular:f.regular, bold:f.bold}, 'Registered Agent', d.agent === 'dos' ? 'New York Secretary of State' : d.organizer, y);
+  y -= 16;
+
+  // Section 3 — Members
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 3 — MEMBERS AND OWNERSHIP', y);
+  y -= 10;
+  // Parse members string
+  var membersList = d.members ? d.members.split(',') : [d.organizer + ' (100%)'];
+  for (var i = 0; i < membersList.length; i++) {
+    var mline = membersList[i].trim();
+    if (mline) {
+      pg.drawText(String.fromCharCode(8226) + ' ' + mline, {
+        x: PDF_MARGIN_L + 10, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+      });
+      y -= 18;
+    }
+  }
+  y -= 10;
+  y = drawTextBlock(pg, '3.2 Each Member\'s rights and obligations with respect to the Company shall be as set forth in this Agreement. No Member shall have the right to assign, transfer, or encumber their membership interest without the prior written consent of a majority of the other Members.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section 4 — Management
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 4 — MANAGEMENT', y);
+  y -= 10;
+  if (d.mgmt === 'manager-managed') {
+    y = drawTextBlock(pg, '4.1 The business and affairs of the Company shall be managed by one or more Managers designated by the Members. The Members shall designate one or more managers to manage the affairs of the Company. A Manager need not be a Member. The Managers shall have full authority to act on behalf of the Company in the ordinary course of business.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  } else {
+    y = drawTextBlock(pg, '4.1 The Company shall be Member-Managed. Each Member shall have full authority to act on behalf of the Company in the ordinary course of business. Major decisions requiring unanimous consent include: amendment of this Agreement, admission of new Members, dissolution, sale of substantially all assets, and incurrence of debt exceeding $10,000.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  }
+  y -= 8;
+
+  drawPageFooter(pg, {regular:f.sans, bold:f.sansBold}, 1, 3);
+
+  // --- PAGE 2 ---
+  var pg2 = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg2, {regular:f.sans, bold:f.sansBold}, 'Operating Agreement', d.name + ' — Page 2');
+  y = PDF_PAGE_H - 90;
+
+  // Section 5 — Capital and Profits
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 5 — CAPITAL CONTRIBUTIONS AND PROFIT DISTRIBUTION', y);
+  y -= 10;
+  y = drawTextBlock(pg2, '5.1 Members may make capital contributions as agreed upon in writing. No Member shall be required to make any additional capital contribution. 5.2 Net profits and losses of the Company shall be allocated among Members in proportion to their respective membership interests. Distributions shall be made at such times and in such amounts as determined by the Members. No distribution shall be made if it would render the Company unable to pay its debts as they become due.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section 6 — Books and Records
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 6 — BOOKS, RECORDS AND FISCAL YEAR', y);
+  y -= 10;
+  y = drawField(pg2, {regular:f.regular, bold:f.bold}, 'Fiscal Year End', d.fiscal || 'December 31', y);
+  y = drawTextBlock(pg2, '6.2 The Company shall maintain at its principal office: (a) a current list of the full name and business address of each Member; (b) a copy of the Articles of Organization and all amendments; (c) copies of the Company\'s federal, state, and local income tax returns for the 3 most recent years; (d) a copy of this Operating Agreement including all amendments. Each Member shall have the right to inspect and copy the Company\'s books and records upon reasonable notice.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section 7 — Taxes
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 7 — TAX MATTERS', y);
+  y -= 10;
+  y = drawTextBlock(pg2, '7.1 The Company shall be treated as a partnership for federal and state income tax purposes (or as a disregarded entity if there is a single Member), unless the Members elect otherwise. Each Member shall report their allocable share of Company income, gain, loss, deduction, and credit on their individual tax return. The Company shall file all required federal, state, and local tax returns and information returns.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section 8 — Dissolution
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 8 — DISSOLUTION AND WINDING UP', y);
+  y -= 10;
+  y = drawTextBlock(pg2, '8.1 The Company shall be dissolved upon: (a) the written consent of all Members; (b) the occurrence of any event that makes it unlawful for the Company to continue its business; (c) entry of a judicial dissolution decree. 8.2 Upon dissolution, the assets shall be applied in the following order: (i) payment of Company debts and liabilities; (ii) payment to Members in respect of their capital contributions; (iii) distribution of remaining assets to Members in proportion to their membership interests.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 16;
+
+  // Section 9 — Miscellaneous
+  y = drawSectionHeader(pg2, {regular:f.regular, bold:f.sansBold}, 'ARTICLE 9 — GENERAL PROVISIONS', y);
+  y -= 10;
+  y = drawTextBlock(pg2, '9.1 GOVERNING LAW: This Agreement shall be governed by the laws of the State of New York. 9.2 ENTIRE AGREEMENT: This Agreement constitutes the entire agreement among the Members with respect to the subject matter and supersedes all prior agreements. 9.3 AMENDMENTS: This Agreement may be amended only by the written consent of all Members. 9.4 SEVERABILITY: If any provision is unenforceable, the remaining provisions shall remain in full force. 9.5 COUNTERPARTS: This Agreement may be executed in counterparts.', f.regular, 11, C_TEXT, PDF_MARGIN_L, y, PDF_USABLE_W, 17);
+  y -= 20;
+
+  drawPageFooter(pg2, {regular:f.sans, bold:f.sansBold}, 2, 3);
+
+  // --- PAGE 3: SIGNATURE PAGE ---
+  var pg3 = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg3, {regular:f.sans, bold:f.sansBold}, 'Operating Agreement', 'Signature Page');
+  y = PDF_PAGE_H - 90;
+
+  pg3.drawText('SIGNATURE PAGE', {
+    x: PDF_MARGIN_L, y: y, size: 18, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 8;
+  drawDivider(pg3, y, C_GOLD, 2);
+  y -= 20;
+
+  pg3.drawText('IN WITNESS WHEREOF, the undersigned Members have executed this Operating Agreement', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 16;
+  pg3.drawText('as of the date first written above.', {
+    x: PDF_MARGIN_L, y: y, size: 11, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b)
+  });
+  y -= 32;
+
+  // Parse members for signatures
+  var sigMembers = d.members ? d.members.split(',') : [d.organizer];
+  for (var s = 0; s < sigMembers.length && s < 4; s++) {
+    var sname = sigMembers[s].replace(/\([^)]*\)/g, '').trim() || 'Member ' + (s+1);
+    y = drawSignatureBlock(pg3, {regular:f.regular, bold:f.bold}, 'Member Signature: ________________________________', sname, y);
+    y -= 10;
+  }
+
+  y -= 20;
+  y = drawInfoBox(pg3, {regular:f.sans, bold:f.sansBold}, 'IMPORTANT NOTES', [
+    'This Operating Agreement does NOT need to be filed with New York State.',
+    'Keep the original signed document in your business records permanently.',
+    'Provide copies to your bank when opening a business checking account.',
+    'Review and update this agreement when members change or major decisions are made.',
+    'Consider having an NY-licensed attorney review this agreement for your specific situation.'
+  ], y, C_NAVY);
+
+  drawPageFooter(pg3, {regular:f.sans, bold:f.sansBold}, 3, 3);
+
+  return doc;
+}
+
+// ============================================================
+// DOCUMENT 4: WBE/MWBE CHECKLIST
+// ============================================================
+async function generateWBEChecklistPDF(pdfLib, fonts, d) {
+  var doc = await pdfLib.PDFDocument.create();
+  doc.setTitle('WBE/MWBE Certification Checklist — ' + d.name);
+  doc.setSubject('New York State WBE/MWBE Application Guide');
+  doc.setCreator('NY BizHer (bizher.osintnet.uk)');
+  doc.setCreationDate(new Date());
+
+  var timesRoman = await doc.embedFont(pdfLib.StandardFonts.TimesRoman);
+  var timesBold  = await doc.embedFont(pdfLib.StandardFonts.TimesRomanBold);
+  var helvetica  = await doc.embedFont(pdfLib.StandardFonts.Helvetica);
+  var helBold    = await doc.embedFont(pdfLib.StandardFonts.HelveticaBold);
+  var f = { regular: timesRoman, bold: timesBold, sans: helvetica, sansBold: helBold };
+
+  var pg = doc.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  drawPageHeader(pg, {regular:f.sans, bold:f.sansBold}, 'WBE/MWBE Certification', 'Empire State Development');
+
+  var y = PDF_PAGE_H - 90;
+
+  pg.drawText('WBE / MWBE CERTIFICATION GUIDE', {
+    x: PDF_MARGIN_L, y: y, size: 18, font: f.bold, color: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b)
+  });
+  y -= 8;
+  drawDivider(pg, y, C_GOLD, 2);
+  y -= 14;
+  pg.drawText('New York State Empire State Development — Free Certification Program', {
+    x: PDF_MARGIN_L, y: y, size: 10, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b)
+  });
+  y -= 24;
+
+  y = drawInfoBox(pg, {regular:f.sans, bold:f.sansBold}, 'What This Certification Gets You (FREE to apply)', [
+    'Listed in NY State MWBE Directory — seen by ALL state agencies and contractors',
+    'Access to billions in NYS procurement set-aside contracts',
+    'Priority consideration for state agency contracts, grants, and loans',
+    'Business development resources through Empire State Development',
+    'NYC M/WBE certification accepted in parallel (separate application)'
+  ], y, C_GREEN);
+
+  y -= 8;
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'ELIGIBILITY REQUIREMENTS (Must meet ALL)', y);
+  y -= 10;
+  var reqs = [
+    'Business is at least 51% owned, operated, and controlled by women and/or minorities',
+    'Owner(s) must be U.S. citizens or permanent resident aliens',
+    'Business must be legally organized in New York State (your LLC qualifies)',
+    'Owner must have day-to-day management and operational control',
+    'Business must be "small" per federal SBA size standards for your NAICS code',
+    'Owner must demonstrate expertise in their field'
+  ];
+  for (var r = 0; r < reqs.length; r++) {
+    pg.drawRectangle({ x: PDF_MARGIN_L + 2, y: y - 2, width: 9, height: 9, borderColor: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b), borderWidth: 1, color: PDFLib.rgb(1,1,1) });
+    pg.drawText(reqs[r], { x: PDF_MARGIN_L + 18, y: y, size: 10, font: f.regular, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b) });
+    y -= 18;
+  }
+  y -= 10;
+
+  y = drawSectionHeader(pg, {regular:f.regular, bold:f.sansBold}, 'REQUIRED DOCUMENTS — Prepare These Now', y);
+  y -= 10;
+
+  var docs_list = [
+    ['Articles of Organization (stamped/filed copy)', 'From your DOS filing receipt'],
+    ['Certificate of Publication (when complete)', 'Filed after newspaper publication'],
+    ['EIN Confirmation Letter (IRS CP 575)', 'From IRS after EIN application'],
+    ['Business bank account statements (3 months)', 'Shows active business operations'],
+    ['Federal/state tax returns (3 years if applicable)', 'Or "N/A if newly formed"'],
+    ['Operating Agreement (signed copy)', 'Proves ownership structure'],
+    ['Owner\'s personal tax returns (3 years)', 'Demonstrates individual control'],
+    ['Photo ID for each 51%+ owner', 'Passport or driver\'s license'],
+    ['Proof of business address', 'Utility bill, lease, or deed'],
+    ['Resume/CV for each qualifying owner', 'Shows expertise in the field']
+  ];
+
+  for (var di = 0; di < docs_list.length; di++) {
+    pg.drawRectangle({ x: PDF_MARGIN_L + 2, y: y - 2, width: 9, height: 9, borderColor: PDFLib.rgb(C_NAVY.r, C_NAVY.g, C_NAVY.b), borderWidth: 1, color: PDFLib.rgb(1,1,1) });
+    pg.drawText(docs_list[di][0], { x: PDF_MARGIN_L + 18, y: y, size: 10, font: f.bold, color: PDFLib.rgb(C_TEXT.r, C_TEXT.g, C_TEXT.b) });
+    var noteW = f.regular.widthOfTextAtSize('(' + docs_list[di][1] + ')', 9);
+    pg.drawText('(' + docs_list[di][1] + ')', { x: PDF_PAGE_W - PDF_MARGIN_R - noteW, y: y, size: 9, font: f.regular, color: PDFLib.rgb(C_MUTED.r, C_MUTED.g, C_MUTED.b) });
+    y -= 18;
+  }
+  y -= 8;
+
+  y = drawInfoBox(pg, {regular:f.sans, bold:f.sansBold}, 'HOW TO APPLY', [
+    'Portal: ny.newcertification.com (create a free account)',
+    'All documents upload as PDF directly in the portal',
+    'Processing time: 60-90 days after complete application',
+    'NYC M/WBE parallel application: nyc.gov/sbs (separate process, also free)',
+    'Technical help: MWBEcertification@esdny.gov'
+  ], y, C_NAVY);
+
+  drawPageFooter(pg, {regular:f.sans, bold:f.sansBold}, 1, 1);
+
+  return doc;
+}
+
+// ============================================================
+// DOCUMENT 5: COMPLETE FORMATION PACKAGE (merged)
+// ============================================================
+async function generateFullPackagePDF(pdfLib, f, d) {
+  // Generate each doc separately, then merge
+  var docs = await Promise.all([
+    generateArticlesPDF(pdfLib, f, d),
+    generatePublicationPDF(pdfLib, f, d),
+    generateOperatingAgreementPDF(pdfLib, f, d),
+    generateWBEChecklistPDF(pdfLib, f, d)
+  ]);
+
+  var merged = await pdfLib.PDFDocument.create();
+  merged.setTitle('NY LLC Complete Formation Package — ' + d.name);
+  merged.setSubject('Articles of Organization + Publication Notice + Operating Agreement + WBE/MWBE Guide');
+  merged.setAuthor('NY BizHer / Indica Independent Media');
+  merged.setCreator('NY BizHer (bizher.osintnet.uk)');
+  merged.setCreationDate(new Date());
+
+  // Add cover page
+  var helvetica = await merged.embedFont(pdfLib.StandardFonts.Helvetica);
+  var helBold   = await merged.embedFont(pdfLib.StandardFonts.HelveticaBold);
+  var timesRoman = await merged.embedFont(pdfLib.StandardFonts.TimesRoman);
+  var timesBold  = await merged.embedFont(pdfLib.StandardFonts.TimesRomanBold);
+  var fc = { regular: timesRoman, bold: timesBold, sans: helvetica, sansBold: helBold };
+
+  var cover = merged.addPage([PDF_PAGE_W, PDF_PAGE_H]);
+  // Full cover background
+  drawRect(cover, 0, 0, PDF_PAGE_W, PDF_PAGE_H, C_NAVY);
+  // Gold accent bar top
+  drawRect(cover, 0, PDF_PAGE_H - 8, PDF_PAGE_W, 8, C_GOLD);
+  // Gold accent bar bottom
+  drawRect(cover, 0, 0, PDF_PAGE_W, 8, C_GOLD);
+
+  // Logo area
+  var cy = PDF_PAGE_H - 120;
+  cover.drawText('NY', {
+    x: PDF_MARGIN_L + 10, y: cy,
+    size: 72, font: fc.bold, color: PDFLib.rgb(C_GOLD.r, C_GOLD.g, C_GOLD.b)
+  });
+  cover.drawText('BizHer', {
+    x: PDF_MARGIN_L + 100, y: cy,
+    size: 72, font: fc.bold, color: PDFLib.rgb(1, 1, 1)
+  });
+  cy -= 32;
+  cover.drawText('Free LLC Formation Wizard for Women Entrepreneurs', {
+    x: PDF_MARGIN_L + 10, y: cy,
+    size: 14, font: fc.sans, color: PDFLib.rgb(0.7, 0.75, 0.85)
+  });
+
+  // Divider
+  cy -= 40;
+  drawRect(cover, PDF_MARGIN_L, cy, PDF_USABLE_W, 2, C_GOLD);
+  cy -= 40;
+
+  // Main title
+  cover.drawText('COMPLETE FORMATION PACKAGE', {
+    x: PDF_MARGIN_L, y: cy, size: 28, font: fc.bold, color: PDFLib.rgb(1,1,1)
+  });
+  cy -= 36;
+  cover.drawText(d.name, {
+    x: PDF_MARGIN_L, y: cy, size: 20, font: fc.bold, color: PDFLib.rgb(C_GOLD.r, C_GOLD.g, C_GOLD.b)
+  });
+  cy -= 26;
+  cover.drawText(d.county + ' County, New York', {
+    x: PDF_MARGIN_L, y: cy, size: 14, font: fc.sans, color: PDFLib.rgb(0.7,0.75,0.85)
+  });
+  cy -= 50;
+
+  // Document list
+  var docNames = [
+    '01  Articles of Organization (DOS-1336-f Equivalent)',
+    '02  Publication Notice — LLC Law Section 206',
+    '03  Operating Agreement (' + (d.mgmt === 'manager-managed' ? 'Manager' : 'Member') + '-Managed)',
+    '04  WBE/MWBE Certification Guide'
+  ];
+  for (var dn = 0; dn < docNames.length; dn++) {
+    drawRect(cover, PDF_MARGIN_L, cy - 22, PDF_USABLE_W, 28, {r:0.09,g:0.14,b:0.28});
+    drawRect(cover, PDF_MARGIN_L, cy - 22, 4, 28, C_GOLD);
+    cover.drawText(docNames[dn], {
+      x: PDF_MARGIN_L + 16, y: cy - 10,
+      size: 12, font: fc.sansBold, color: PDFLib.rgb(1,1,1)
+    });
+    cy -= 38;
+  }
+
+  cy -= 20;
+  var today = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  cover.drawText('Generated: ' + today, {
+    x: PDF_MARGIN_L, y: cy, size: 11, font: fc.sans, color: PDFLib.rgb(0.6,0.65,0.75)
+  });
+  cy -= 18;
+  cover.drawText('bizher.osintnet.uk — A free public tool by Indica Independent Media', {
+    x: PDF_MARGIN_L, y: cy, size: 10, font: fc.sans, color: PDFLib.rgb(0.5,0.55,0.65)
+  });
+  cy -= 50;
+
+  // Disclaimer
+  cover.drawText('LEGAL DISCLAIMER', {
+    x: PDF_MARGIN_L, y: cy, size: 9, font: fc.sansBold, color: PDFLib.rgb(0.6,0.65,0.75)
+  });
+  cy -= 14;
+  var disclaimer = 'This package provides general legal information only, not legal advice. No attorney-client relationship is formed. Laws change — always verify current requirements with the New York Department of State (dos.ny.gov) and consult a licensed New York attorney before filing any legal documents.';
+  cy = drawTextBlock(cover, disclaimer, fc.sans, 8.5, {r:0.5,g:0.55,b:0.65}, PDF_MARGIN_L, cy, PDF_USABLE_W, 14);
+
+  // Merge all pages
+  for (var mi = 0; mi < docs.length; mi++) {
+    var srcPages = await merged.copyPages(docs[mi], docs[mi].getPageIndices());
+    for (var spi = 0; spi < srcPages.length; spi++) {
+      merged.addPage(srcPages[spi]);
+    }
+  }
+
+  return merged;
+}
+
+// ============================================================
+// TRIGGER: Download a specific PDF
+// ============================================================
+async function downloadPDF(type) {
+  var btn = document.getElementById('pdf-btn-' + type);
+  var origText = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Generating...'; btn.disabled = true; }
+
+  try {
+    var pdfLib = await loadPdfLib();
+    var d = getFD();
+    var doc;
+    var filename;
+
+    var safeN = d.name.replace(/[^a-zA-Z0-9_\-]/g, '_');
+
+    if (type === 'articles') {
+      doc = await generateArticlesPDF(pdfLib, null, d);
+      filename = safeN + '_Articles_of_Organization.pdf';
+    } else if (type === 'publication') {
+      doc = await generatePublicationPDF(pdfLib, null, d);
+      filename = safeN + '_Publication_Notice.pdf';
+    } else if (type === 'operating') {
+      doc = await generateOperatingAgreementPDF(pdfLib, null, d);
+      filename = safeN + '_Operating_Agreement.pdf';
+    } else if (type === 'wbe') {
+      doc = await generateWBEChecklistPDF(pdfLib, null, d);
+      filename = safeN + '_WBE_MWBE_Checklist.pdf';
+    } else if (type === 'package') {
+      doc = await generateFullPackagePDF(pdfLib, null, d);
+      filename = safeN + '_Complete_Formation_Package.pdf';
+    }
+
+    var pdfBytes = await doc.save();
+    var blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); document.body.removeChild(a); }, 1000);
+
+    if (btn) { btn.textContent = 'Downloaded!'; setTimeout(function() { btn.textContent = origText; btn.disabled = false; }, 2500); }
+  } catch (err) {
+    console.error('PDF error:', err);
+    alert('PDF generation error: ' + err.message + '\\nPlease check your internet connection (pdf-lib loads from CDN).');
+    if (btn) { btn.textContent = origText; btn.disabled = false; }
+  }
+}
+
 </script>
 </body>
 </html>`;
