@@ -922,7 +922,7 @@ function getFD() {
 function genArticles() {
   var d = getFD();
   var agentText = d.agent === 'dos'
-    ? 'The Secretary of State is designated as agent of the limited liability company upon whom process against it may be served. The Secretary of State shall mail a copy of any process against it served upon the Secretary of State to:\n    ' + d.organizer + '\n    ' + d.address
+    ? 'The Secretary of State is designated as agent of the limited liability company upon whom process against it may be served. The Secretary of State shall mail a copy of any process against it served upon the Secretary of State to: ' + d.organizer + ', ' + d.address
     : 'The registered agent is ' + d.organizer + ', located at: ' + d.address;
 
   var today = new Date().toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
@@ -982,7 +982,7 @@ function genArticles() {
     '- SAVE YOUR FILING RECEIPT -- required for MWBE certification',
     '- 120-day publication clock begins on your filing date',
   ];
-  document.getElementById('articles-out').textContent = lines.join('\n');
+  document.getElementById('articles-out').textContent = lines.join('\\n');
 }
 
 // ========================
@@ -1003,7 +1003,7 @@ function genPubNotice() {
     'Purpose: ' + d.purpose,
   ];
   var el = document.getElementById('pub-notice');
-  if (el) el.textContent = lines.join('\n');
+  if (el) el.textContent = lines.join('\\n');
 }
 
 // ========================
@@ -1067,8 +1067,8 @@ function genOpAgreement() {
     '',
     '3.1 The Company shall be ' + d.mgmt + '.',
     (d.mgmt === 'member-managed'
-      ? '    Each member has authority to act on behalf of the Company\n    in the ordinary course of business.'
-      : '    The members shall designate one or more managers to manage\n    the affairs of the Company.'),
+      ? '    Each member has authority to act on behalf of the Company in the ordinary course of business.'
+      : '    The members shall designate one or more managers to manage the affairs of the Company.'),
     '',
     '3.2 Major Decisions Requiring Unanimous Consent:',
     '    (a) Amendment of this Agreement',
@@ -1123,7 +1123,7 @@ function genOpAgreement() {
 
   var el = document.getElementById('opagree-out');
   var act = document.getElementById('opagree-act');
-  el.textContent = lines.join('\n');
+  el.textContent = lines.join('\\n');
   el.style.display = 'block';
   act.style.display = 'flex';
 }
