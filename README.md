@@ -11,22 +11,22 @@
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Details |
 |---|---|
-| 🏛️ **5-Step Wizard** | Foundation → Articles → Publication → EIN & Ops → WBE/MWBE |
-| 📄 **Document Generation** | Auto-generates Articles of Organization + Operating Agreement |
-| 💰 **Real Costs Upfront** | Filing $200 · Publication $600–2K · Cert of Pub $50 · EIN FREE · WBE FREE |
-| 🌐 **Bilingual** | Full English + Spanish (EN/ES toggle) |
-| 📱 **Mobile First** | Fully responsive — works on any device |
-| ⚖️ **Legally Accurate** | Reflects current NY DOS law, BCL, and MWBE regulations (2026) |
-| 🔓 **No Login Required** | Zero friction — start immediately |
-| ♿ **Accessible** | WCAG-compliant labels, contrast, and keyboard navigation |
+| **5-Step Wizard** | Foundation → Articles → Publication → EIN & Ops → WBE/MWBE |
+| **Document Generation** | Auto-generates Articles of Organization + Operating Agreement |
+| **Real Costs Upfront** | Filing $200 · Publication $600–2K · Cert of Pub $50 · EIN FREE · WBE FREE |
+| **Bilingual** | Full English + Spanish (EN/ES toggle) |
+| **Mobile First** | Fully responsive — works on any device |
+| **Legally Accurate** | Reflects current NY DOS law, BCL, and MWBE regulations (2026) |
+| **No Login Required** | Zero friction — start immediately |
+| **Accessible** | WCAG-compliant labels, contrast, and keyboard navigation |
 
 ---
 
-## 📋 The 5 Steps
+## The 5 Steps
 
 ### Step 1 — Business Foundation
 LLC name, county, organizer, registered agent, address, business purpose, membership type.
@@ -45,7 +45,7 @@ Full guidance on NYS MWBE certification, NYC MWBE, and federal WOSB/EDWOSB progr
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Browser → Cloudflare Worker (bizher-wizard)
@@ -62,7 +62,7 @@ Browser → Cloudflare Worker (bizher-wizard)
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ```bash
 # Deploy to Cloudflare Workers
@@ -77,13 +77,13 @@ Then add a Worker Route: `bizher.osintnet.uk/*` → `bizher-wizard`
 
 ---
 
-## ⚖️ Legal Disclaimer
+## Legal Disclaimer
 
 This tool provides **general legal information only, not legal advice**. No attorney-client relationship is formed. Always verify current requirements with the [NY Department of State](https://dos.ny.gov) and a licensed NY attorney before filing.
 
 ---
 
-## 🤝 Built By
+## Built By
 
 **Indica Independent Media** — [osintnet.uk](https://osintnet.uk)
 
@@ -96,11 +96,11 @@ Part of the VPDLNY initiative: knowledge as a weapon for vulnerable communities.
 
 ---
 
-## ⚡ Support the Mission
+## Support the Mission
 
 This is free, ad-free, independent infrastructure — no VC, no gov funding, no strings. If it served you, a tip keeps it alive and funds the next tool.
 
 [![Donate via SkyGive](https://img.shields.io/badge/Donate_via_SkyGive-8A5CF6?style=for-the-badge&logoColor=white)](https://donate.skygive.app/)
 [![Lightning](https://img.shields.io/badge/tips@skygive.app-F7931A?style=for-the-badge&logo=lightning&logoColor=white)](https://donate.skygive.app/)
 
-<sub>🧡 Sovereign Lightning + on-chain via SkyGive. Your sats fund uptime, not ads.</sub>
+<sub> Sovereign Lightning + on-chain via SkyGive. Your sats fund uptime, not ads.</sub>
